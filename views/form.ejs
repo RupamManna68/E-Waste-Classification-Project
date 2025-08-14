@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Item</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="mb-4">Add New Item to Inventory</h2>
+                
+                <% if (message) { %>
+                    <div class="alert alert-<%= message.type === 'success' ? 'success' : 'danger' %>" role="alert">
+                        <%= message.text %>
+                        <% if (message.type === 'success' && message.url) { %>
+                            <br><strong>Item URL:</strong> <a href="<%= message.url %>" target="_blank"><%= message.url %></a>
+                            <% if (message.qrCode) { %>
+                                <br><br>
+                                <div class="mt-3">
+                                    <strong>QR Code Generated:</strong>
+                                    <div class="mt-2">
+                                        <img src="<%= message.qrCode %>" alt="QR Code" class="img-thumbnail" style="max-width: 200px;">
+                                    </div>
+                                    <div class="mt-2">
+                                        <a href="/qr/<%= message.item.unique_id %>/png" class="btn btn-sm btn-outline-primary me-2">Download PNG</a>
+                                        <a href="/qr/<%= message.item.unique_id %>/svg" class="btn btn-sm btn-outline-secondary">Download SVG</a>
+                                    </div>
+                                    <small class="text-muted d-block mt-1">
+                                        QR Code specs: 300×300px PNG, High contrast, Error correction level M<br>
+                                        Minimum print size: 30×30mm for optimal scanning
+                                    </small>
+                                </div>
+                            <% } %>
+                        <% } %>
+                    </div>
+                <% } %>
+
+                <form action="/submit" method="POST" class="needs-validation" novalidate>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="type" class="form-label">Type *</label>
+                            <input type="text" class="form-control" id="type" name="type" required>
+                            <div class="invalid-feedback">Please provide a type.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="dept" class="form-label">Department *</label>
+                            <input type="text" class="form-control" id="dept" name="dept" required>
+                            <div class="invalid-feedback">Please provide a department.</div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="serial_no" class="form-label">Serial Number *</label>
+                            <input type="text" class="form-control" id="serial_no" name="serial_no" required>
+                            <div class="invalid-feedback">Please provide a serial number.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="category" class="form-label">Category *</label>
+                            <select class="form-select" id="category" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="Hardware">Hardware</option>
+                                <option value="Software">Software</option>
+                                <option value="Equipment">Equipment</option>
+                                <option value="Furniture">Furniture</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a category.</div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="hazard" class="form-label">Hazard Level *</label>
+                            <select class="form-select" id="hazard" name="hazard" required>
+                                <option value="">Select Hazard Level</option>
+                                <option value="None">None</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                                <option value="Critical">Critical</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a hazard level.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="data_sensitivity" class="form-label">Data Sensitivity *</label>
+                            <select class="form-select" id="data_sensitivity" name="data_sensitivity" required>
+                                <option value="">Select Sensitivity Level</option>
+                                <option value="Public">Public</option>
+                                <option value="Internal">Internal</option>
+                                <option value="Confidential">Confidential</option>
+                                <option value="Restricted">Restricted</option>
+                            </select>
+                            <div class="invalid-feedback">Please select data sensitivity level.</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="date_decommissioned" class="form-label">Date Decommissioned (Optional)</label>
+                        <input type="date" class="form-control" id="date_decommissioned" name="date_decommissioned">
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="reset" class="btn btn-secondary me-md-2">Reset</button>
+                        <button type="submit" class="btn btn-primary">Add Item</button>
+                    </div>
+                </form>
+
+                <div class="mt-4">
+                    <a href="/items" class="btn btn-outline-secondary">View All Items</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Bootstrap form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</body>
+</html>
