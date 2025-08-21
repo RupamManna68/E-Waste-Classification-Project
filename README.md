@@ -6,6 +6,6 @@
     <li><i>Rupam Manna</i></li>
     <li><i>Aranya Sen</i></li>
     <li><i>Ritaja Ghosh</i></li>
-    <li><i>Ishani Pal</i></li>
+    <li><i>Isani Pal</i></li>
   </ul>
 </div>
